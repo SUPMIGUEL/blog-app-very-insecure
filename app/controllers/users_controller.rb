@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :prevent_login_signup, only: [:new]
+  before_action :only_admin, only: [:index, :show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -25,7 +27,6 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
         login_user(@user) 
@@ -71,5 +72,12 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:email, :password, :password_digest, :admin)
+    end
+    def only_admin
+      if !current_user
+        redirect_to root_path
+      elsif !current_user.admin
+        redirect_to root_path
+      end
     end
 end

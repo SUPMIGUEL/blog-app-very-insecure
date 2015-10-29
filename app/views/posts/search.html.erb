@@ -12,8 +12,11 @@ Search Results:
       <%= res.content %>
       <h6>Written by <%= res.user.email %></h6>
       </td>
+      
       <td><%= link_to 'Show', res %><br />
+      <% if current_user.admin %>
       <%= link_to 'Edit', edit_post_path(res.id) %><br />
+      <% end %>
     </tr>
   <% end %>
   </tbody>

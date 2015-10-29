@@ -12,14 +12,15 @@
         <% end %>
         </h4><br />
         <%= post.content %>
-
-        <% if current_user.admin? %>
+ok ok
+        <% if !current_user.admin %>
           <h6>Written by <%= post.user.email %></h6>
-        <% end %>
+        
         </td>
         <td><%= link_to 'Show', post %><br />
         <%= link_to 'Edit', edit_post_path(post) %><br />
         <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

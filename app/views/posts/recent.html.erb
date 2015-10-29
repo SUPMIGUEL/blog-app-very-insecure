@@ -9,9 +9,11 @@
         <td><h4><%= link_to  post.title, post %></h4><br />
         <%= post.content %> 
         <h6>Written by <%= post.user.email %></h6></td>
+        <% if current_user && current_user.admin %> 
         <td><%= link_to 'Show', post %><br />
         <%= link_to 'Edit', edit_post_path(post) %><br />
         <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %> 
       </tr>
     <% end %>
   </tbody>

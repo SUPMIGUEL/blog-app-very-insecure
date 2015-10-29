@@ -1,7 +1,8 @@
 class PostsController < ApplicationController
   before_action :confirm_logged_in
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_post, only: [:show]
+  before_action :set_post_for_edit, only:[:edit, :create, :destroy]
+  before_action :set_your_post, only:[:index]
   # GET /posts
   # GET /posts.json
   def index
@@ -95,8 +96,22 @@ class PostsController < ApplicationController
       end
     end
 
+    def set_post_for_edit
+      if current_user.admin?
+        @post = Post.find(params[:id])
+      else
+        @post = current_user.posts.find_by(id: params[:id])
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :content, :public)
+    end
+
+    def set_your_post
+      if current_user.id != params[:user_id].to_i
+        redirect_to root_path
+      end
     end
 end
